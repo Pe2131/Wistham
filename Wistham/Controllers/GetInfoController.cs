@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repository;
 using Repository.InterFaces;
 
 namespace Wistham.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GetInfoController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -19,9 +22,18 @@ namespace Wistham.Controllers
         }
         // GET: api/GetInfo
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var Camerainfo = _unitOfWork.CameraInfoRepository.Get().ToList();
+                return new ObjectResult(Camerainfo);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+       
         }
 
         // GET: api/GetInfo/5
