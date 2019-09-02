@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repository.InterFaces;
 
 namespace Wistham.Controllers
 {
@@ -11,6 +12,11 @@ namespace Wistham.Controllers
     [ApiController]
     public class GetInfoController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfWork;
+        public GetInfoController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         // GET: api/GetInfo
         [HttpGet]
         public IEnumerable<string> Get()
