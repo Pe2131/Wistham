@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Repository.InterFaces;
+using Wistham.ViewModel;
 
 namespace Wistham.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class GetInfoController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -33,7 +35,7 @@ namespace Wistham.Controllers
             {
                 return BadRequest(e.Message);
             }
-       
+
         }
 
         // GET: api/GetInfo/5
@@ -45,8 +47,27 @@ namespace Wistham.Controllers
 
         // POST: api/GetInfo
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] GetCameraInfo cameraInfo)
         {
+            try
+            {
+                var user = _unitOfWork.UserRepository.Get(a => a.UserName == cameraInfo.UserName & a.Password == cameraInfo.Password);
+                if (user.Any())
+                {
+                    var Camerainfo = _unitOfWork.CameraInfoRepository.Get(a => a.CameraId == Convert.ToInt32(cameraInfo.CameraId)).ToList();
+                    return new ObjectResult(Camerainfo);
+                }
+                else
+                {
+                    return StatusCode((int)HttpStatusCode.Unauthorized, "Login Faild");
+                }
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+
         }
 
         // PUT: api/GetInfo/5

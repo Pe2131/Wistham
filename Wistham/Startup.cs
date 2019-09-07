@@ -33,20 +33,20 @@ namespace Wistham
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<WisthamApiContext>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            //JWT for authentication
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = "http://localhost:55224",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OurVerifyTopLearn"))
-                    };
-                });
+            ////JWT for authentication
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters()
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = false,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = "http://localhost:55224",
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OurVerifyTokenForWistham"))
+            //        };
+            //    });
 
             //cors for let another client access to my api
             services.AddCors(options =>
@@ -71,7 +71,7 @@ namespace Wistham
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseCors("EnableCors");
             app.UseMvc();
         }

@@ -32,7 +32,7 @@ namespace Wistham.Controllers
                 return Unauthorized();
             }
 
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OurVerifyTopLearn"));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OurVerifyTokenForWistham"));
 
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
